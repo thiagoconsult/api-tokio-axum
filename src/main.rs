@@ -1,6 +1,14 @@
+use axum::extract::Request;
 use axum::{Router, routing::get};
 
-async fn handle_health() -> &'static str {
+async fn handle_health(req: Request) -> &'static str {
+    let method = req.method();
+    let uri = req.uri();
+    let headers = req.headers();
+
+    let msg = format!("method: {method}\nuri: {uri}\nheaders: {headers:#?}");
+    println!("{msg}");
+
     "OK"
 }
 
