@@ -1,9 +1,13 @@
 use axum::{Router, routing::get};
 
-async fn server() -> std::io::Result<()> {
-    let app = Router::new().route("/health", get(|| async { "ok" }));
+async fn handle_health() -> &'static str {
+    "OK"
+}
 
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:8080").await?;
+async fn server() -> std::io::Result<()> {
+    let app = Router::new().route("/health", get(handle_health));
+
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:3000").await?;
     axum::serve(listener, app).await?;
 
     Ok(())
